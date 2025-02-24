@@ -69,20 +69,16 @@ export default class Tree {
     return curr;
   }
 
-  find(value) {
-    function fi(root, value) {
-      if (root === null) return null;
+  find(value, root = this.root) {
+    if (root === null) return null;
 
-      if (root.data === value) return root;
+    if (root.data === value) return root;
 
-      if (value < root.data) {
-        return fi(root.left, value);
-      } else {
-        return fi(root.right, value);
-      }
+    if (value < root.data) {
+      return this.find(value, root.left);
+    } else {
+      return this.find(value, root.right);
     }
-
-    return fi(this.root, value);
   }
 
   prettyPrint = (node, prefix = "", isLeft = true) => {

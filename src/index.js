@@ -9,4 +9,4 @@ bst.deleteItem(23);
 
 bst.prettyPrint(bst.root);
 
-console.log(bst.find(99));
+console.log(bst.find(4));
