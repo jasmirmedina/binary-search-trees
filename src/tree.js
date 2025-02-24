@@ -25,57 +25,48 @@ export default class Tree {
     return root;
   }
 
-  insert(value) {
-    function ins(root, value) {
-      if (root === null) return new Node(value);
+  insert(value, root = this.root) {
+    if (root === null) return new Node(value);
 
-      if (root.data === value) return root;
+    if (root.data === value) return root;
 
-      if (value < root.data) {
-        root.left = ins(root.left, value);
-      } else if (value > root.data) {
-        root.right = ins(root.right, value);
-      }
-
-      return root;
+    if (value < root.data) {
+      root.left = this.insert(value, root.left);
+    } else {
+      root.right = this.insert(value, root.right);
     }
 
-    ins(this.root, value);
+    return root;
   }
 
-  deleteItem(value) {
-    function getS(curr) {
-      curr = curr.right;
+  deleteItem(value, root = this.root) {
+    if (root === null) return root;
 
-      while (curr !== null && curr.left !== null) {
-        curr = curr.left;
-      }
+    if (root.data > value) {
+      root.left = this.deleteItem(value, root.left);
+    } else if (root.data < value) {
+      root.right = this.deleteItem(value, root.right);
+    } else {
+      if (root.left === null) return root.right;
+      if (root.right === null) return root.left;
 
-      return curr;
+      let succ = this.getSuccessor(root);
+
+      root.data = succ.data;
+      root.right = this.deleteItem(succ.data, root.right);
     }
 
-    function del(root, value) {
-      if (root === null) return root;
+    return root;
+  }
 
-      if (root.data > value) {
-        root.left = del(root.left, value);
-      } else if (root.data < value) {
-        root.right = del(root.right, value);
-      } else {
-        if (root.left === null) return root.right;
+  getSuccessor(curr) {
+    curr = curr.right;
 
-        if (root.right === null) return root.left;
-
-        let succ = getS(root);
-
-        root.data = succ.data;
-        root.right = del(root.right, succ.data);
-      }
-
-      return root;
+    while (curr !== null && curr.left !== null) {
+      curr = curr.left;
     }
 
-    del(this.root, value);
+    return curr;
   }
 
   find(value) {
