@@ -78,6 +78,22 @@ export default class Tree {
     del(this.root, value);
   }
 
+  find(value) {
+    function fi(root, value) {
+      if (root === null) return null;
+
+      if (root.data === value) return root;
+
+      if (value < root.data) {
+        return fi(root.left, value);
+      } else {
+        return fi(root.right, value);
+      }
+    }
+
+    return fi(this.root, value);
+  }
+
   prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
