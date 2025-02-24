@@ -25,6 +25,59 @@ export default class Tree {
     return root;
   }
 
+  insert(value) {
+    function ins(root, value) {
+      if (root === null) return new Node(value);
+
+      if (root.data === value) return root;
+
+      if (value < root.data) {
+        root.left = ins(root.left, value);
+      } else if (value > root.data) {
+        root.right = ins(root.right, value);
+      }
+
+      return root;
+    }
+
+    ins(this.root, value);
+  }
+
+  deleteItem(value) {
+    function getS(curr) {
+      curr = curr.right;
+
+      while (curr !== null && curr.left !== null) {
+        curr = curr.left;
+      }
+
+      return curr;
+    }
+
+    function del(root, value) {
+      if (root === null) return root;
+
+      if (root.data > value) {
+        root.left = del(root.left, value);
+      } else if (root.data < value) {
+        root.right = del(root.right, value);
+      } else {
+        if (root.left === null) return root.right;
+
+        if (root.right === null) return root.left;
+
+        let succ = getS(root);
+
+        root.data = succ.data;
+        root.right = del(root.right, succ.data);
+      }
+
+      return root;
+    }
+
+    del(this.root, value);
+  }
+
   prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
